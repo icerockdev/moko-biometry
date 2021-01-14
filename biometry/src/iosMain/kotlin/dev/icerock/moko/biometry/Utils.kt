@@ -24,5 +24,5 @@ internal suspend fun <T> callbackToCoroutine(callbackCall: ((T?, NSError?) -> Un
 internal fun NSError?.toException(): Exception {
     if (this == null) return kotlin.NullPointerException()
 
-    return Exception(this.description)
+    return Exception(this.description())
 }
