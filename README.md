@@ -1,5 +1,5 @@
 ![moko-biometry](img/logo.png)  
-[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://api.bintray.com/packages/icerockdev/moko/moko-biometry/images/download.svg) ](https://bintray.com/icerockdev/moko/moko-biometry/_latestVersion) ![kotlin-version](https://img.shields.io/badge/kotlin-1.4.21-orange)
+[![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://img.shields.io/maven-central/v/dev.icerock.moko/biometry) ](https://repo1.maven.org/maven2/dev/icerock/moko/biometry) ![kotlin-version](https://img.shields.io/badge/kotlin-1.4.31-orange)
 
 # Mobile Kotlin biometry
 This is a Kotlin Multiplatform library that provides authentication by FaceId and TouchId(Fingerprint)
@@ -24,15 +24,19 @@ This is a Kotlin Multiplatform library that provides authentication by FaceId an
 - iOS version 9.0+
 
 ## Versions
+### Bintray
 - kotlin 1.4.21
   - 0.1.0
+### mavenCentral
+- kotlin 1.4.31
+  - 0.1.1
 
 ## Installation
 root build.gradle  
 ```groovy
 allprojects {
     repositories {
-        maven { url = "https://dl.bintray.com/icerockdev/moko" }
+        mavenCentral()
     }
 }
 ```
@@ -40,7 +44,7 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:biometry:0.1.0")
+    commonMainApi("dev.icerock.moko:biometry:0.1.1")
 }
 ```
 

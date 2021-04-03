@@ -3,13 +3,14 @@
  */
 
 object Deps {
-    private const val kotlinVersion = "1.4.21"
+    private const val kotlinVersion = "1.4.31"
     private const val androidAppCompatVersion = "1.1.0"
-    private const val mokoResourcesVersion = "0.14.0"
     private const val androidBiometricVersion = "1.0.1"
-    private const val coroutinesVersion = "1.4.2-native-mt"
-    private const val mokoMvvmVersion = "0.9.0"
-    const val mokoBiometryVersion = "0.1.0"
+    private const val coroutinesVersion = "1.4.2"
+    
+    private const val mokoResourcesVersion = "0.15.1"
+    private const val mokoMvvmVersion = "0.9.2"
+    const val mokoBiometryVersion = "0.1.1"
 
 
     object Android {
@@ -31,6 +32,7 @@ object Deps {
         val mobileMultiPlatform = GradlePlugin(id = "dev.icerock.mobile.multiplatform")
         val iosFramework = GradlePlugin(id = "dev.icerock.mobile.multiplatform.ios-framework")
         val mavenPublish = GradlePlugin(id = "maven-publish")
+        val signing = GradlePlugin(id = "signing")
     }
 
     object Libs {
