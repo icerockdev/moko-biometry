@@ -1,0 +1,16 @@
+[versions]
+kotlinVersion = "1.5.20"
+androidAppCompatVersion = "1.2.0"
+androidBiometricVersion = "1.0.1"
+coroutinesVersion = "1.5.0-native-mt"
+mokoResourcesVersion = "0.16.1"
+mokoMvvmVersion = "0.11.0"
+mokoBiometryVersion = "0.2.0"
+
+[libraries]
+appCompat = { module = "androidx.appcompat:appcompat", version.ref = "androidAppCompatVersion" }
+biometric = { module = "androidx.biometric:biometric", version.ref = "androidBiometricVersion" }
+coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutinesVersion" }
+mokoMvvm = { module = "dev.icerock.moko:mvvm", version.ref = "mokoMvvmVersion" }
+mokoResources = { module = "dev.icerock.moko:resources", version.ref = "mokoResourcesVersion" }
+
