@@ -4,20 +4,14 @@
 
 plugins {
     id("com.android.library")
-    id("android-base-convention")
-    id("detekt-convention")
     id("org.jetbrains.kotlin.multiplatform")
+    id("android-base-convention")
     id("dev.icerock.mobile.multiplatform.android-manifest")
-    id("dev.icerock.mobile.multiplatform.ios-framework")
 }
 
 kotlin {
-    android()
+    android {
+        publishLibraryVariants("release", "debug")
+    }
     ios()
-}
-
-dependencies {
-    commonMainApi(projects.biometry)
-    commonMainApi(libs.coroutines)
-    commonMainImplementation(libs.mokoMvvm)
 }

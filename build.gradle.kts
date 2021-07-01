@@ -6,40 +6,18 @@ buildscript {
     repositories {
         mavenCentral()
         google()
-
-        jcenter {
-            content {
-                includeGroup("org.jetbrains.trove4j")
-            }
-        }
+        gradlePluginPortal()
     }
 
     dependencies {
-        plugin(Deps.Plugins.androidExtensions)
+        classpath(":biometry-build-logic")
     }
 }
 
 allprojects {
-    repositories {
-        mavenCentral()
-        google()
-
-        jcenter {
-            content {
-                includeGroup("org.jetbrains.trove4j")
-            }
-        }
-    }
-
-    plugins.withId(Deps.Plugins.androidLibrary.id) {
-        configure<com.android.build.gradle.LibraryExtension> {
-            compileSdkVersion(Deps.Android.compileSdk)
-
-            defaultConfig {
-                minSdkVersion(Deps.Android.minSdk)
-                targetSdkVersion(Deps.Android.targetSdk)
-            }
-        }
+    plugins.withId("org.gradle.maven-publish") {
+        group = "dev.icerock.moko"
+        version = libs.versions.mokoBiometryVersion.get()
     }
 }
 
