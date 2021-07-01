@@ -1,7 +1,6 @@
 /*
  * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
-
 package com.icerockdev.library
 
 import dev.icerock.moko.biometry.BiometryAuthenticator
@@ -17,6 +16,7 @@ class SampleViewModel(
 
     val biometryAuthenticator = BiometryAuthenticator()
 
+    @Suppress("TooGenericExceptionCaught")
     fun tryToAuth() {
         viewModelScope.launch {
             try {
