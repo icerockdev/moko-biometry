@@ -1,4 +1,4 @@
-![moko-biometry](img/logo.png)  
+![moko-biometry](https://user-images.githubusercontent.com/5010169/128705751-e76a78a4-e367-4d4f-a643-b90e250a6f22.png)  
 [![GitHub license](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0) [![Download](https://img.shields.io/maven-central/v/dev.icerock.moko/biometry) ](https://repo1.maven.org/maven2/dev/icerock/moko/biometry) ![kotlin-version](https://kotlin-version.aws.icerock.dev/kotlin-version?group=dev.icerock.moko&name=biometry)
 
 # Mobile Kotlin biometry
