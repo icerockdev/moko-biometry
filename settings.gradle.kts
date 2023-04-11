@@ -12,5 +12,6 @@ dependencyResolutionManagement {
 }
 
 include(":biometry")
+include(":biometry-compose")
 include(":sample:android-app")
 include(":sample:mpp-library")

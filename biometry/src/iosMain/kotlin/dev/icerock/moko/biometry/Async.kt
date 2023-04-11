@@ -4,24 +4,16 @@
 
 package dev.icerock.moko.biometry
 
-import kotlinx.cinterop.staticCFunction
 import platform.Foundation.NSThread
-import platform.darwin.dispatch_get_main_queue
-import platform.darwin.dispatch_sync_f
-import kotlin.native.concurrent.Continuation2
-import kotlin.native.concurrent.callContinuation2
 
 internal inline fun <T1, T2> mainContinuation(
-    singleShot: Boolean = true,
     noinline block: (T1, T2) -> Unit
-) = Continuation2(
-    block, staticCFunction { invokerArg ->
-        if (NSThread.isMainThread()) {
-            invokerArg!!.callContinuation2<T1, T2>()
-        } else {
-            dispatch_sync_f(dispatch_get_main_queue(), invokerArg, staticCFunction { args ->
-                args!!.callContinuation2<T1, T2>()
-            })
+): (T1, T2) -> Unit = { arg1, arg2 ->
+    if (NSThread.isMainThread()) {
+        block.invoke(arg1, arg2)
+    } else {
+        MainRunDispatcher.run {
+            block.invoke(arg1, arg2)
         }
-    }, singleShot
-)
+    }
+}

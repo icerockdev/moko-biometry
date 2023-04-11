@@ -35,7 +35,10 @@ allprojects {
 project build.gradle
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:biometry:0.2.0")
+    commonMainApi("dev.icerock.moko:biometry:0.3.0")
+    
+    // Compose Multiplatform
+    commonMainApi("dev.icerock.moko:biometry-compose:0.3.0")
 }
 ```
 
