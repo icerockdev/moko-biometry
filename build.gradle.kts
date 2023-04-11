@@ -19,11 +19,11 @@ buildscript {
     }
 }
 
-subprojects {
-    plugins.withId("org.gradle.maven-publish") {
-        group = "dev.icerock.moko"
-        version = libs.versions.mokoBiometryVersion.get()
-    }
+apply(plugin = "dev.icerock.moko.gradle.publication.nexus")
+val mokoVersion = libs.versions.mokoBiometryVersion.get()
+allprojects {
+    group = "dev.icerock.moko"
+    version = mokoVersion
 }
 
 tasks.register("clean", Delete::class).configure {
