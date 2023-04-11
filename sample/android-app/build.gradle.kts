@@ -3,14 +3,11 @@
  */
 
 plugins {
-    id("android-app-convention")
-    id("kotlin-android")
-    id("kotlin-kapt")
+    id("dev.icerock.moko.gradle.android.application")
+    id("dev.icerock.moko.gradle.detekt")
 }
 
 android {
-    buildFeatures.dataBinding = true
-
     defaultConfig {
         applicationId = "dev.icerock.moko.samples.biometry"
 
