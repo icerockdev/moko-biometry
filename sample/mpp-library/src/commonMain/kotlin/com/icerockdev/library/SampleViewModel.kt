@@ -11,16 +11,16 @@ import dev.icerock.moko.resources.desc.desc
 import kotlinx.coroutines.launch
 
 class SampleViewModel(
+    val biometryAuthenticator: BiometryAuthenticator,
     override val eventsDispatcher: EventsDispatcher<EventListener>
 ) : ViewModel(), EventsDispatcherOwner<SampleViewModel.EventListener> {
-
-    val biometryAuthenticator = BiometryAuthenticator()
 
     @Suppress("TooGenericExceptionCaught")
     fun tryToAuth() {
         viewModelScope.launch {
             try {
                 val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
+                    requestTitle = "Biometry".desc(),
                     requestReason = "Just for test".desc(),
                     failureButtonText = "Oops".desc()
                 )

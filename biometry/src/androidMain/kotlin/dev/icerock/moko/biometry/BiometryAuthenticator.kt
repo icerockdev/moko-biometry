@@ -5,9 +5,9 @@
 package dev.icerock.moko.biometry
 
 import android.annotation.SuppressLint
-import android.content.pm.PackageManager
-import android.os.Build
-import androidx.biometric.BiometricConstants
+import android.content.Context
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_WEAK
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -17,14 +17,13 @@ import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.OnLifecycleEvent
 import dev.icerock.moko.resources.desc.StringDesc
-import dev.icerock.moko.resources.desc.desc
 import java.util.concurrent.Executor
 import kotlin.coroutines.suspendCoroutine
 
-actual class BiometryAuthenticator actual constructor() {
-
-    var fragmentManager: FragmentManager? = null
-    private var _packageManager: PackageManager? = null
+actual class BiometryAuthenticator(
+    private val applicationContext: Context
+) {
+    private var fragmentManager: FragmentManager? = null
 
     fun bind(lifecycle: Lifecycle, fragmentManager: FragmentManager) {
         this.fragmentManager = fragmentManager
@@ -40,34 +39,17 @@ actual class BiometryAuthenticator actual constructor() {
         lifecycle.addObserver(observer)
     }
 
-    fun setPackageManager(packageManager: PackageManager) {
-        this._packageManager = packageManager
-    }
-
     actual suspend fun checkBiometryAuthentication(
+        requestTitle: StringDesc,
         requestReason: StringDesc,
         failureButtonText: StringDesc
     ): Boolean {
+        val resolverFragment: ResolverFragment = getResolverFragment()
 
-        val fragmentManager = fragmentManager
-            ?: error("can't check biometry without active window")
-
-        val currentFragment: Fragment? = fragmentManager.findFragmentByTag(BIOMETRY_RESOLVER_FRAGMENT_TAG)
-        val resolverFragment: ResolverFragment = if (currentFragment != null) {
-            currentFragment as ResolverFragment
-        } else {
-            ResolverFragment().apply {
-                fragmentManager
-                    .beginTransaction()
-                    .add(this, BIOMETRY_RESOLVER_FRAGMENT_TAG)
-                    .commitNow()
-            }
-        }
-
-        return suspendCoroutine<Boolean> { continuation ->
+        return suspendCoroutine { continuation ->
             var resumed = false
             resolverFragment.showBiometricPrompt(
-                requestTitle = "Biometry".desc(),
+                requestTitle = requestTitle,
                 requestReason = requestReason,
                 failureButtonText = failureButtonText,
                 credentialAllowed = true
@@ -80,30 +62,31 @@ actual class BiometryAuthenticator actual constructor() {
         }
     }
 
-    /**
-     * Performs a fingerprint scan availability check
-     *
-     * @return true if it is possible to use a fingerprint scanner, false - if it is not available
-     */
-    actual fun isTouchIdEnabled(): Boolean {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
-            return false
-        }
-        return _packageManager?.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)
-            ?: error("can't check touch id enabled without packageManager")
+    actual fun isBiometricAvailable(): Boolean {
+        val manager: BiometricManager = BiometricManager.from(applicationContext)
+        return manager.canAuthenticate(BIOMETRIC_WEAK) == BiometricManager.BIOMETRIC_SUCCESS
     }
 
-    /**
-     * Performs the availability check of the FaceID scan
-     *
-     * @return true if it is possible to use the face scanner, false - if it is not available
-     */
-    actual fun isFaceIdEnabled(): Boolean {
-        return false
+    private fun getResolverFragment(): ResolverFragment {
+        val fragmentManager: FragmentManager = fragmentManager
+            ?: error("can't check biometry without active window")
+
+        val currentFragment: Fragment? = fragmentManager
+            .findFragmentByTag(BIOMETRY_RESOLVER_FRAGMENT_TAG)
+
+        return if (currentFragment != null) {
+            currentFragment as ResolverFragment
+        } else {
+            ResolverFragment().apply {
+                fragmentManager
+                    .beginTransaction()
+                    .add(this, BIOMETRY_RESOLVER_FRAGMENT_TAG)
+                    .commitNow()
+            }
+        }
     }
 
     class ResolverFragment : Fragment() {
-
         private lateinit var executor: Executor
         private lateinit var biometricPrompt: BiometricPrompt
         private lateinit var promptInfo: BiometricPrompt.PromptInfo

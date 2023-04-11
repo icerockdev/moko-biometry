@@ -9,9 +9,14 @@ plugins {
     id("dev.icerock.moko.gradle.detekt")
 }
 
+android {
+    namespace = "dev.icerock.moko.biometry"
+}
+
 dependencies {
     androidMainImplementation(libs.appCompat)
     androidMainImplementation(libs.biometric)
+    iosMainImplementation(libs.coroutines)
 
     commonMainApi(libs.mokoResources)
 }
