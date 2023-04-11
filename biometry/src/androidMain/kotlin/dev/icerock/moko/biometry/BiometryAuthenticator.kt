@@ -4,8 +4,10 @@
 
 package dev.icerock.moko.biometry
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
+import androidx.biometric.BiometricConstants
 import androidx.biometric.BiometricPrompt
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -47,9 +49,8 @@ actual class BiometryAuthenticator actual constructor() {
         failureButtonText: StringDesc
     ): Boolean {
 
-        val fragmentManager =
-            fragmentManager
-                ?: throw IllegalStateException("can't check biometry without active window")
+        val fragmentManager = fragmentManager
+            ?: error("can't check biometry without active window")
 
         val currentFragment: Fragment? = fragmentManager.findFragmentByTag(BIOMETRY_RESOLVER_FRAGMENT_TAG)
         val resolverFragment: ResolverFragment = if (currentFragment != null) {
@@ -89,7 +90,7 @@ actual class BiometryAuthenticator actual constructor() {
             return false
         }
         return _packageManager?.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)
-            ?: throw IllegalStateException("can't check touch id enabled without packageManager")
+            ?: error("can't check touch id enabled without packageManager")
     }
 
     /**
@@ -132,6 +133,7 @@ actual class BiometryAuthenticator actual constructor() {
 
             biometricPrompt = BiometricPrompt(this, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
+                    @SuppressLint("RestrictedApi")
                     override fun onAuthenticationError(
                         errorCode: Int,
                         errString: CharSequence

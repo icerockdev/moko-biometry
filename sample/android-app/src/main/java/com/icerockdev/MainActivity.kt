@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity(), SampleViewModel.EventListener {
         }
     }
 
-    fun onLoginButtonClick(view: View?) {
+    fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View?) {
         viewModel.tryToAuth()
     }
 

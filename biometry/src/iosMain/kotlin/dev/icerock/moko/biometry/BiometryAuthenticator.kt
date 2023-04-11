@@ -11,9 +11,7 @@ import kotlinx.cinterop.memScoped
 import kotlinx.cinterop.ptr
 import kotlinx.cinterop.value
 import platform.Foundation.NSError
-import platform.LocalAuthentication.LABiometryType
 import platform.LocalAuthentication.LAContext
-import platform.LocalAuthentication.LAPolicy
 
 actual class BiometryAuthenticator actual constructor() {
     actual suspend fun checkBiometryAuthentication(
@@ -53,13 +51,15 @@ actual class BiometryAuthenticator actual constructor() {
 
     actual fun isTouchIdEnabled(): Boolean {
         val laContext = LAContext()
-        val canEvaluate = laContext.canEvaluatePolicy(AUTH_DEVICE_OWNER_BIOMETRY_POLICY, error = null)
+        val canEvaluate =
+            laContext.canEvaluatePolicy(AUTH_DEVICE_OWNER_BIOMETRY_POLICY, error = null)
         return canEvaluate && laContext.biometryType == BIOMETRY_TYPE_TOUCH_ID
     }
 
     actual fun isFaceIdEnabled(): Boolean {
         val laContext = LAContext()
-        val canEvaluate = laContext.canEvaluatePolicy(AUTH_DEVICE_OWNER_BIOMETRY_POLICY, error = null)
+        val canEvaluate =
+            laContext.canEvaluatePolicy(AUTH_DEVICE_OWNER_BIOMETRY_POLICY, error = null)
         return canEvaluate && laContext.biometryType == BIOMETRY_TYPE_FACE_ID
     }
 
