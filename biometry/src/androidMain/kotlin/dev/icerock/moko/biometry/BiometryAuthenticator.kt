@@ -4,6 +4,7 @@
 
 package dev.icerock.moko.biometry
 
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.biometric.BiometricConstants
@@ -45,11 +46,11 @@ actual class BiometryAuthenticator actual constructor() {
 
     actual suspend fun checkBiometryAuthentication(
         requestReason: StringDesc,
-        failureButtonText: StringDesc): Boolean {
+        failureButtonText: StringDesc
+    ): Boolean {
 
-        val fragmentManager =
-            fragmentManager
-                ?: throw IllegalStateException("can't check biometry without active window")
+        val fragmentManager = fragmentManager
+            ?: error("can't check biometry without active window")
 
         val currentFragment: Fragment? = fragmentManager.findFragmentByTag(BIOMETRY_RESOLVER_FRAGMENT_TAG)
         val resolverFragment: ResolverFragment = if (currentFragment != null) {
@@ -89,7 +90,7 @@ actual class BiometryAuthenticator actual constructor() {
             return false
         }
         return _packageManager?.hasSystemFeature(PackageManager.FEATURE_FINGERPRINT)
-            ?: throw IllegalStateException("can't check touch id enabled without packageManager")
+            ?: error("can't check touch id enabled without packageManager")
     }
 
     /**
@@ -132,25 +133,26 @@ actual class BiometryAuthenticator actual constructor() {
 
             biometricPrompt = BiometricPrompt(this, executor,
                 object : BiometricPrompt.AuthenticationCallback() {
-                    override fun onAuthenticationError(errorCode: Int,
-                                                       errString: CharSequence) {
+                    @SuppressLint("RestrictedApi")
+                    override fun onAuthenticationError(
+                        errorCode: Int,
+                        errString: CharSequence
+                    ) {
                         super.onAuthenticationError(errorCode, errString)
-                        if (errorCode == BiometricConstants.ERROR_NEGATIVE_BUTTON) {
-                            callback.invoke(Result.failure(Exception(errorCode.toString())))
+                        if (errorCode == BiometricPrompt.ERROR_NEGATIVE_BUTTON ||
+                            errorCode == BiometricPrompt.ERROR_USER_CANCELED
+                        ) {
+                            callback.invoke(Result.success(false))
                         } else {
                             callback.invoke(Result.failure(Exception(errString.toString())))
                         }
                     }
 
                     override fun onAuthenticationSucceeded(
-                        result: BiometricPrompt.AuthenticationResult) {
+                        result: BiometricPrompt.AuthenticationResult
+                    ) {
                         super.onAuthenticationSucceeded(result)
                         callback.invoke(Result.success(true))
-                    }
-
-                    override fun onAuthenticationFailed() {
-                        super.onAuthenticationFailed()
-                        callback.invoke(Result.success(false))
                     }
                 }
             )
@@ -173,5 +175,4 @@ actual class BiometryAuthenticator actual constructor() {
     companion object {
         private const val BIOMETRY_RESOLVER_FRAGMENT_TAG = "BiometryControllerResolver"
     }
-
 }

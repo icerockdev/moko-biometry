@@ -20,7 +20,10 @@ class SampleViewModel(
     fun tryToAuth() {
         viewModelScope.launch {
             try {
-                val isSuccess = biometryAuthenticator.checkBiometryAuthentication("Just for test".desc(), "Oops".desc())
+                val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
+                    requestReason = "Just for test".desc(),
+                    failureButtonText = "Oops".desc()
+                )
                 if (isSuccess) {
                     eventsDispatcher.dispatchEvent { onSuccess() }
                 }

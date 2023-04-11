@@ -4,10 +4,10 @@
 
 package dev.icerock.moko.biometry
 
+import platform.Foundation.NSError
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
 import kotlin.coroutines.suspendCoroutine
-import platform.Foundation.NSError
 
 internal suspend fun <T> callbackToCoroutine(callbackCall: ((T?, NSError?) -> Unit) -> Unit): T {
     return suspendCoroutine { continuation ->
@@ -22,7 +22,7 @@ internal suspend fun <T> callbackToCoroutine(callbackCall: ((T?, NSError?) -> Un
 }
 
 internal fun NSError?.toException(): Exception {
-    if (this == null) return kotlin.NullPointerException()
+    if (this == null) return NullPointerException("NSError is null")
 
     return Exception(this.description())
 }

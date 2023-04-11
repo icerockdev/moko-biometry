@@ -12,7 +12,8 @@ expect class BiometryAuthenticator() {
      * Performs user authentication using biometrics-fingerprint/face scan-returns the result of the scan
      *
      * @param requestReason - Text describing the reason for confirmation via biometrics
-     * @param failureButtonText - Text of the button to go to the backup verification method in case of unsuccessful biometrics recognition
+     * @param failureButtonText - Text of the button to go to the backup verification method in
+     * case of unsuccessful biometrics recognition
      *
      * @throws Exception if authentication failed
      *
