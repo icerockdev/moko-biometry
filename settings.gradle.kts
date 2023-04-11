@@ -8,17 +8,10 @@ dependencyResolutionManagement {
     repositories {
         mavenCentral()
         google()
-
-        jcenter {
-            content {
-                includeGroup("org.jetbrains.kotlinx")
-            }
-        }
     }
 }
 
-includeBuild("biometry-build-logic")
-
 include(":biometry")
+include(":biometry-compose")
 include(":sample:android-app")
 include(":sample:mpp-library")

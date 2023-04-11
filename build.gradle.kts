@@ -10,11 +10,16 @@ buildscript {
     }
 
     dependencies {
-        classpath(":biometry-build-logic")
+        classpath(libs.kotlinGradlePlugin)
+        classpath(libs.androidGradlePlugin)
+        classpath(libs.mokoGradlePlugin)
+        classpath(libs.mobileMultiplatformGradlePlugin)
+        classpath(libs.composeJetBrainsGradlePlugin)
+        classpath(libs.detektGradlePlugin)
     }
 }
 
-allprojects {
+subprojects {
     plugins.withId("org.gradle.maven-publish") {
         group = "dev.icerock.moko"
         version = libs.versions.mokoBiometryVersion.get()

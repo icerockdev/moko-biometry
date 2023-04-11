@@ -12,8 +12,10 @@ class TestViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.viewModel = SampleViewModel(eventsDispatcher: Mvvm_coreEventsDispatcher(listener: self))
-        
+        self.viewModel = SampleViewModel(
+            biometryAuthenticator: BiometryBiometryAuthenticator(),
+            eventsDispatcher: Mvvm_coreEventsDispatcher(listener: self)
+        )
     }
     
     @IBAction private func loginAction() {

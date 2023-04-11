@@ -3,18 +3,20 @@
  */
 
 plugins {
-    id("multiplatform-library-convention")
-    id("kotlin-parcelize")
-    id("dev.icerock.mobile.multiplatform.android-manifest")
-    id("publication-convention")
+    id("dev.icerock.moko.gradle.multiplatform.mobile")
+    id("dev.icerock.moko.gradle.publication")
+    id("dev.icerock.moko.gradle.stub.javadoc")
+    id("dev.icerock.moko.gradle.detekt")
 }
 
-group = "dev.icerock.moko"
-version = libs.versions.mokoBiometryVersion.get()
+android {
+    namespace = "dev.icerock.moko.biometry"
+}
 
 dependencies {
-    "androidMainImplementation"(libs.appCompat)
-    "androidMainImplementation"(libs.biometric)
+    androidMainImplementation(libs.appCompat)
+    androidMainImplementation(libs.biometric)
+    iosMainImplementation(libs.coroutines)
 
-    commonMainImplementation(libs.mokoResources)
+    commonMainApi(libs.mokoResources)
 }

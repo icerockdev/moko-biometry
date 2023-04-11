@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.icerockdev.library.SampleViewModel
+import dev.icerock.moko.biometry.BiometryAuthenticator
 import dev.icerock.moko.mvvm.dispatcher.eventsDispatcherOnMain
 import dev.icerock.moko.mvvm.getViewModel
 
@@ -23,6 +24,7 @@ class MainActivity : AppCompatActivity(), SampleViewModel.EventListener {
         // Creates viewModel from common code.
         viewModel = getViewModel {
             SampleViewModel(
+                biometryAuthenticator = BiometryAuthenticator(applicationContext = applicationContext),
                 eventsDispatcher = eventsDispatcherOnMain()
             )
         }.also {
@@ -31,11 +33,10 @@ class MainActivity : AppCompatActivity(), SampleViewModel.EventListener {
                 lifecycle = this.lifecycle,
                 fragmentManager = supportFragmentManager
             )
-
         }
     }
 
-    fun onLoginButtonClick(view: View?) {
+    fun onLoginButtonClick(@Suppress("UNUSED_PARAMETER") view: View?) {
         viewModel.tryToAuth()
     }
 
