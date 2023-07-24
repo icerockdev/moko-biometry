@@ -18,7 +18,8 @@ This is a Kotlin Multiplatform library that provides authentication by FaceId an
 
 ## Features
 
-...
+- **Biometric user authentication** - allows you to use familiar user authentication methods from business logic
+- **Compose Multiplatform** support (partly, mobile platforms: Android, iOS)
 
 ## Requirements
 
@@ -46,7 +47,7 @@ dependencies {
 
     // Compose Multiplatform
     commonMainApi("dev.icerock.moko:biometry-compose:0.3.0")
-    
+
     // Jetpack Compose (only for android, if you don't use multiplatform)
     implementation("dev.icerock.moko:biometry-compose:0.3.0")
 }
@@ -80,7 +81,8 @@ class SampleViewModel(
     }
 }
 ```
-After create ViewModel with logic, let's integrate on platform. 
+
+After create ViewModel, let's integrate on platform.
 
 **Android**
 
@@ -117,14 +119,14 @@ class MainActivity : AppCompatActivity() {
 
 ```kotlin
 class MainActivity : AppCompatActivity() {
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setContent {
-            val biometryFactory = rememberBiometryAuthenticatorFactory()
-            
+            val biometryFactory: BiometryAuthenticatorFactory = rememberBiometryAuthenticatorFactory()
+
             // Create viewModel from common code
             val viewModel = getViewModel {
                 SampleViewModel(
@@ -133,10 +135,10 @@ class MainActivity : AppCompatActivity() {
                     biometryAuthenticator = biometryFactory.createBiometryAuthenticator()
                 )
             }
-            
+
             // Binds the Biometry Authenticator to the view lifecycle
             BindBiometryAuthenticatorEffect(viewModel.biometryAuthenticator)
-            
+
             // Same screen content here
         }
     }
@@ -171,6 +173,45 @@ Additionally, you need add `NSFaceIDUsageDescription` key in Info.plist of your 
 <string>$(PRODUCT_NAME) Authentication with TouchId or FaceID</string>
 ```
 
+**Compose Multiplatform:**
+
+```kotlin
+@Composable
+fun BiometryScreen() {
+    val biometryFactory: BiometryAuthenticatorFactory = rememberBiometryAuthenticatorFactory()
+    
+    BiometryScreen(
+        viewModel = getViewModel(
+            key = "biometry-screen",
+            factory = viewModelFactory {
+                BiometryViewModel(
+                    biometryAuthenticator = biometryAuthenticatorFactory.createBiometryAuthenticator()
+                )
+            }
+        )
+    )
+}
+
+@Composable
+private fun BiometryScreen(
+    viewModel: BiometryViewModel
+) = NavigationScreen(title = "moko-biometry") { paddingValues ->
+    BindBiometryAuthenticatorEffect(viewModel.biometryAuthenticator)
+
+    val text: String by viewModel.result.collectAsState()
+
+    Column(
+        modifier = Modifier.fillMaxSize().padding(paddingValues),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(text = text)
+
+        Button(onClick = viewModel::onButtonClick) {
+            Text(text = "Click on me")
+        }
+    }
+}
+```
 
 ## Samples
 
