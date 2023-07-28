@@ -24,7 +24,8 @@ expect class BiometryAuthenticator {
     suspend fun checkBiometryAuthentication(
         requestTitle: StringDesc,
         requestReason: StringDesc,
-        failureButtonText: StringDesc
+        failureButtonText: StringDesc,
+        allowDeviceCredentials: Boolean = true
     ): Boolean
 
     /**
