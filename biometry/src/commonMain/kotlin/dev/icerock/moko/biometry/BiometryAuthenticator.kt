@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2023 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package dev.icerock.moko.biometry
@@ -15,6 +15,8 @@ expect class BiometryAuthenticator {
      * @param requestReason - Text describing the reason for confirmation via biometrics
      * @param failureButtonText - Text of the button to go to the backup verification method in
      * case of unsuccessful biometrics recognition
+     * @param allowDeviceCredentials - Boolean value of device credentials availability,
+     * if biometric permission is not granted user can authorise by device passcode
      *
      * @throws Exception if authentication failed
      *
@@ -24,7 +26,8 @@ expect class BiometryAuthenticator {
     suspend fun checkBiometryAuthentication(
         requestTitle: StringDesc,
         requestReason: StringDesc,
-        failureButtonText: StringDesc
+        failureButtonText: StringDesc,
+        allowDeviceCredentials: Boolean = true
     ): Boolean
 
     /**

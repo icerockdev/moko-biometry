@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
+ * Copyright 2023 IceRock MAG Inc. Use of this source code is governed by the Apache 2.0 license.
  */
 
 package dev.icerock.moko.biometry
@@ -42,7 +42,8 @@ actual class BiometryAuthenticator(
     actual suspend fun checkBiometryAuthentication(
         requestTitle: StringDesc,
         requestReason: StringDesc,
-        failureButtonText: StringDesc
+        failureButtonText: StringDesc,
+        allowDeviceCredentials: Boolean
     ): Boolean {
         val resolverFragment: ResolverFragment = getResolverFragment()
 
@@ -52,7 +53,7 @@ actual class BiometryAuthenticator(
                 requestTitle = requestTitle,
                 requestReason = requestReason,
                 failureButtonText = failureButtonText,
-                credentialAllowed = true
+                credentialAllowed = allowDeviceCredentials
             ) {
                 if (!resumed) {
                     continuation.resumeWith(it)
