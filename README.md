@@ -43,13 +43,13 @@ project build.gradle
 
 ```groovy
 dependencies {
-    commonMainApi("dev.icerock.moko:biometry:0.3.0")
+    commonMainApi("dev.icerock.moko:biometry:0.4.0")
 
     // Compose Multiplatform
-    commonMainApi("dev.icerock.moko:biometry-compose:0.3.0")
+    commonMainApi("dev.icerock.moko:biometry-compose:0.4.0")
 
     // Jetpack Compose (only for android, if you don't use multiplatform)
-    implementation("dev.icerock.moko:biometry-compose:0.3.0")
+    implementation("dev.icerock.moko:biometry-compose:0.4.0")
 }
 ```
 
@@ -69,7 +69,8 @@ class SampleViewModel(
             val isSuccess = biometryAuthenticator.checkBiometryAuthentication(
                 requestTitle = "Biometry".desc(),
                 requestReason = "Just for test".desc(),
-                failureButtonText = "Oops".desc()
+                failureButtonText = "Oops".desc(),
+                allowDeviceCredentials = false // true - if biometric permission is not granted user can authorise by device creds
             )
 
             if (isSuccess) {

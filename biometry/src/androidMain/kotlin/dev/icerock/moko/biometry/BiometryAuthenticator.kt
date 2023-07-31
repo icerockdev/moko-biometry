@@ -42,7 +42,8 @@ actual class BiometryAuthenticator(
     actual suspend fun checkBiometryAuthentication(
         requestTitle: StringDesc,
         requestReason: StringDesc,
-        failureButtonText: StringDesc
+        failureButtonText: StringDesc,
+        allowDeviceCredentials: Boolean
     ): Boolean {
         val resolverFragment: ResolverFragment = getResolverFragment()
 
@@ -52,7 +53,7 @@ actual class BiometryAuthenticator(
                 requestTitle = requestTitle,
                 requestReason = requestReason,
                 failureButtonText = failureButtonText,
-                credentialAllowed = true
+                credentialAllowed = allowDeviceCredentials
             ) {
                 if (!resumed) {
                     continuation.resumeWith(it)

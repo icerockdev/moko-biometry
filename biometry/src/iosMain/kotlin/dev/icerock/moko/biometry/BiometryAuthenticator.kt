@@ -19,15 +19,22 @@ actual class BiometryAuthenticator constructor() {
     actual suspend fun checkBiometryAuthentication(
         requestTitle: StringDesc,
         requestReason: StringDesc,
-        failureButtonText: StringDesc
+        failureButtonText: StringDesc,
+        allowDeviceCredentials: Boolean
     ): Boolean {
         val laContext = LAContext()
         laContext.setLocalizedFallbackTitle(failureButtonText.localized())
 
+        val policy = if (allowDeviceCredentials) {
+            LAPolicyDeviceOwnerAuthentication
+        } else {
+            LAPolicyDeviceOwnerAuthenticationWithBiometrics
+        }
+
         val (canEvaluate: Boolean?, error: NSError?) = memScoped {
             val p = alloc<ObjCObjectVar<NSError?>>()
             val canEvaluate: Boolean? = runCatching {
-                laContext.canEvaluatePolicy(LAPolicyDeviceOwnerAuthentication, error = p.ptr)
+                laContext.canEvaluatePolicy(policy, error = p.ptr)
             }.getOrNull()
             canEvaluate to p.value
         }
@@ -37,7 +44,7 @@ actual class BiometryAuthenticator constructor() {
 
         return callbackToCoroutine { callback ->
             laContext.evaluatePolicy(
-                policy = LAPolicyDeviceOwnerAuthentication,
+                policy = policy,
                 localizedReason = requestReason.localized(),
                 reply = mainContinuation { result: Boolean, error: NSError? ->
                     callback(result, error)
