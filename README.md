@@ -176,6 +176,11 @@ Additionally, you need add `NSFaceIDUsageDescription` key in Info.plist of your 
 
 **Compose Multiplatform:**
 
+Note:
+
+
+In compose for android, the MainActivity is extended from ComponentActivity, we need to change it to FragmentActivity
+
 ```kotlin
 @Composable
 fun BiometryScreen() {
