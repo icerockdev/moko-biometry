@@ -118,8 +118,10 @@ class MainActivity : AppCompatActivity() {
 
 **Compose:**
 
+In compose for android, the MainActivity is extended from ComponentActivity, we need to change it to FragmentActivity
+
 ```kotlin
-class MainActivity : AppCompatActivity() {
+class MainActivity : FragmentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
